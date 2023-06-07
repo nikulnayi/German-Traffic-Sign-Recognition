@@ -4,7 +4,39 @@ from tensorflow.keras import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator  
 
 def createGenerators(batchSize,trainDataPath,valDataPath,testDataPath):
-    preprocessor = 
+    preprocessor = ImageDataGenerator(
+        rescale = 1/255.
+    )
+
+    train_generator = preprocessor.flow_from_directory(
+        trainDataPath,
+        class_mode="categorical",
+        target_size=(60,60),
+        color_mode='rgb',
+        shuffle=True,
+        batch_size=batchSize
+    )
+
+    val_generator = preprocessor.flow_from_directory(
+        valDataPath,
+        class_mode="categorical",
+        target_size=(60,60),
+        color_mode="rgb",
+        shuffle=False,
+        batch_size=batchSize,
+    )
+
+    test_generator = preprocessor.flow_from_directory(
+        testDataPath,
+        class_mode="categorical",
+        target_size=(60,60),
+        color_mode="rgb",
+        shuffle=False,
+        batch_size=batchSize,
+    )
+
+    return train_generator, val_generator, test_generator
+
 
 
 def streetsSignModel(numberOfClasses):
@@ -19,14 +51,13 @@ def streetsSignModel(numberOfClasses):
     x = MaxPool2D()(x)
     x = BatchNormalization()(x)
 
-    x = Flatten()(x)
+    # x = Flatten()(x)
     x = GlobalAvgPool2D()(x)
     x = Dense(64, activation='relu')(x)
-    x = Dense(10,activation='softmax')(x)
+    x = Dense(numberOfClasses,activation='softmax')(x)
 
-    model = Model(inputs=myInput,outputs = x)
-    return model
+    return Model(inputs=myInput,outputs = x)
 
-if __name__=="__main__":
-    model = streetsSignModel(10)
-    model.summary()
+# if __name__=="__main__":
+#     model = streetsSignModel(10)
+#     model.summary()
