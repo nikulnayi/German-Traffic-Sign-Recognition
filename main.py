@@ -23,7 +23,7 @@ if __name__=="__main__":
     pathToSaveModel = 'Model/'
     batchSize = 64
     epochs = 15
-
+    lr = 0.0001
     
     trainGenerator, valGenerator, testGenerator = createGenerators(batchSize,pathToTrain,pathToVal,pathToTest)
     numberOfClasses = trainGenerator.num_classes
@@ -44,7 +44,8 @@ if __name__=="__main__":
         earlyStop = EarlyStopping(monitor='val_accuracy', patience = 10)
 
         model = streetsSignModel(numberOfClasses)
-        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        optimizer = tf.keras.optimizers.Adam(learning_rate=lr, amsgrad=True)
+        model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
         model.fit(trainGenerator, 
                 epochs=epochs,
                 batch_size=batchSize,
