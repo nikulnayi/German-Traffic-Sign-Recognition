@@ -4,11 +4,16 @@ from tensorflow.keras import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator  
 
 def createGenerators(batchSize,trainDataPath,valDataPath,testDataPath):
-    preprocessor = ImageDataGenerator(
-        rescale = 1/255.
+    trainPreprocessor = ImageDataGenerator(
+        rescale = 1/255.,
+        rotation_range = 10,
+        width_shift_range = 0.1
+    )
+    testPreprocessor = ImageDataGenerator(
+        rescale = 1/255.,
     )
 
-    train_generator = preprocessor.flow_from_directory(
+    train_generator = trainPreprocessor.flow_from_directory(
         trainDataPath,
         class_mode="categorical",
         target_size=(60,60),
@@ -17,7 +22,7 @@ def createGenerators(batchSize,trainDataPath,valDataPath,testDataPath):
         batch_size=batchSize
     )
 
-    val_generator = preprocessor.flow_from_directory(
+    val_generator = testPreprocessor.flow_from_directory(
         valDataPath,
         class_mode="categorical",
         target_size=(60,60),
@@ -26,7 +31,7 @@ def createGenerators(batchSize,trainDataPath,valDataPath,testDataPath):
         batch_size=batchSize,
     )
 
-    test_generator = preprocessor.flow_from_directory(
+    test_generator = testPreprocessor.flow_from_directory(
         testDataPath,
         class_mode="categorical",
         target_size=(60,60),
