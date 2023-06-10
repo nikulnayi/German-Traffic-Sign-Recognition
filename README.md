@@ -35,4 +35,4 @@ The project consists of the following files:
 Feel free to modify and experiment with the code to improve the model's performance.
 
 ## Credits
-- GTSRB dataset: [MeowMeowMeowMeowMeow](https://www.kaggle.com/meowmeowmeowmeowmeow)
+- GTSRB dataset: [Data](https://www.kaggle.com/meowmeowmeowmeowmeow)
